@@ -1,3 +1,5 @@
+;+ = shift, ! = Alt, ^ = Control, # = Win (tecla Windows)
+;Ejemplo remplazar "s.c " por "Saludos cordiales " "::s.c::Saludos cordiales"
 ;
 ; GTA V Online AHK-Macros v1.1.1 by 2called-chaos
 ; based on/inspired by GTA V Useful Macros v4.21 by twentyafterfour
@@ -41,27 +43,42 @@
 ;   https://www.autohotkey.com/docs/KeyList.htm
 ; WARNING: If you don't want to use a certain binding use "F24"
 ;          or any other valid key or it will break!
-SnackMenuKey         := "+#" ; Open Snack menu (+ = shift, rtfm).
-AutoHealthKey        := "#" ; Automatic snacking. Eats 2 snacks from second snack slot.
-ArmorMenuKey         := "+F1" ; Open Armor menu.
-AutoArmorKey         := "F1" ; Automatic armor equip (uses super heavy armor only).
-RetrieveCarKey       := "F2" ; Request Personal Vehicle.
-TogglePassiveKey     := "F3" ; Toggle passive mode.
-EquipScarfKey        := "NumpadDot" ; Equip first scarf (heist outfit glitch, see readme/misc).
-CycleOutfitKey       := "NumpadAdd" ; Equip next/cycle through saved outfits.
-ToggleVIPKey         := "NumpadSub" ; Toggle VIP mode (required when VIP/CEO/MC).
-KillGameKey          := "+F12" ; Kill game process, requires pskill.exe
-ForceDisconnectKey   := "F12" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
-ChatSnippetsKey      := "F11" ; Gives you a few text snippets to put in chat (chat must be already open)
-RandomHeistKey       := "F7" ; Chooses on-call random heist from phone options
-CEOBuzzardKey        := "F24" ; Spawn free CEO buzzard
+SnackMenuKey         := "+F1" ; Open Snack menu (+ = shift, rtfm).
+AutoHealthKey        := "F1" ; Automatic snacking. Eats 2 snacks from second snack slot.
+ArmorMenuKey         := "+F2" ; Open Armor menu.
+AutoArmorKey         := "F2" ; Automatic armor equip (uses super heavy armor only).
+ThermalVisionKey     := "F24" ;
+RetrieveCarKey       := "F5" ; Request Personal Vehicle.
+OpressorMKIIKey      := "F24" ;
+NanoDroneKey         := "F24" ;
+RCBanditoKey         := "F24" ;
+RCTankKey            := "F24" ;
+TogglePassiveKey     := "F8" ; Toggle passive mode.
+EquipScarfKey        := "F24" ; Equip first scarf (heist outfit glitch, see readme/misc).
+CycleOutfitKey       := "F24" ; Equip next/cycle through saved outfits.
+KillGameKey          := "F24" ; Kill game process, requires pskill.exe
+ForceDisconnectKey   := "F24" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
+ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
+RandomHeistKey       := "F24" ; Chooses on-call random heist from phone options
 
-DialDialogKey        := "+F5" ; Call GUI with a list of almost all numbers
-CallMechanicKey      := "F5" ; Call Mechanic
+
+ToggleVIPKey         := "F12" ; Toggle VIP mode (required when VIP/CEO/MC).
+RegisterCEOKey       := "F9" ;
+RegisterMCKey        := "F10" ;
+RetireVIPKey         := "F11" ;
+CEOBuzzardKey        := "F7" ; Spawn free CEO buzzard
+StorageMCKey         := "F24" ;
+
+
+DialDialogKey        := "+l" ; Call GUI with a list of almost all numbers
+CallMechanicKey      := "F24" ; Call Mechanic
 CallPegasusKey       := "F24" ; Call Pegasus
 CallMerryweatherKey  := "F24" ; Call Merryweather
-CallInsuranceKey     := "F6" ; Call Insurance
-CallLesterKey        := "F24" ; Call Lester
+CallInsuranceKey     := "F24" ; Call Insurance
+CallLesterKey        := "l" ; Call Lester
+SaveMoneyKey         := "F24" ; 
+
+ChangeMapKey         := "Numpad0" ;
 
 
 ; Options (should be fine out of the box)
@@ -82,11 +99,12 @@ ArrayChatSnippets.push("You want some cool AHK macros? github.com/2called-chaos/
 ; Delays (you normally don't want to change these, you can try to play with these values if you have a slow/fast PC)
 IntFocusDelay        := 100  ; delay (in ms) after focussing game when AHK-GUI took focus.
 IntMenuDelay         := 120  ; delay (in ms) after opening interaction menu.
-IntPhoneMenuDelay    := 1850 ; delay (in ms) after opening phone menu.
+IntPhoneMenuDelay    := 800 ; delay (in ms) after opening phone menu. default(1850)
 IntPhoneMenuDelay2   := 250  ; delay (in ms) after selecting phone menu entries.
 IntPhoneScrollDelay  := 75   ; delay (in ms) between scrolls in the phone menu.
 IntKeySendDelay      := 25   ; delay (in ms) delay between send key commands.
 IntKeyPressDuration  := 5    ; duration (in ms) each key press is held down.
+IntMenuEscDelay      := 1000    ; duration (in ms) each key press is held down.
 
 
 ; In case you changed your ingame bindings:
@@ -156,6 +174,17 @@ Hotkey, %CallPegasusKey%, CallPegasus
 Hotkey, %CallMerryweatherKey%, CallMerryweather
 Hotkey, %CallInsuranceKey%, CallInsurance
 Hotkey, %CallLesterKey%, CallLester
+Hotkey, %ThermalVisionKey%, ThermalVision
+Hotkey, %OpressorMKIIKey%, OpressorMKII
+Hotkey, %NanoDroneKey%, NanoDrone
+Hotkey, %RCBanditoKey%, RCBandito
+Hotkey, %RCTankKey%, RCTank
+Hotkey, %RegisterCEOKey%, RegisterCEO
+Hotkey, %RegisterMCKey%, RegisterMC
+Hotkey, %RetireVIPKey%, RetireVIP
+Hotkey, %StorageMCKey%, StorageMC
+Hotkey, %ChangeMapKey%, ChangeMap
+; Hotkey, %SaveMoneyKey, SaveMoney
 
 ; Sets delay(ms) between keystrokes issued. Arguments are delay between keystrokes and press duration, respectively.
 ; They might be able to go lower but these values are pretty fast and work reliably.
@@ -170,6 +199,20 @@ Return
 ; === Functions ===
 ; =================
 
+statusVIP(IsVIPActivated) {
+  if(IsVIPActivated) {
+  SplashTextOn 250, 20, VIP mode, VIP mode ACTIVATED
+  Sleep 700
+  SplashTextOff
+  bringGameIntoFocus()
+  } else {
+  SplashTextOn 250, 20, VIP mode, VIP mode DEACTIVATEDXXXX
+  Sleep 700
+  SplashTextOff
+  bringGameIntoFocus()
+  }
+}
+
 openInteractionMenu(isVIPActive) {
   global IntMenuDelay
   global IGB_Interaction
@@ -180,16 +223,38 @@ openInteractionMenu(isVIPActive) {
   }
 }
 
-openSnackMenu() {
-  Send {Down}{Down}{Enter}{Down}{Down}{Enter}
+openInventory() {
+  Send {Down}{Down}{Enter}
 }
 
-openArmorMenu() {
-  Send {Down}{Down}{Enter}{Down}{Enter}
+openStyle() {
+  Send {Down}{Down}{Down}{Enter}
 }
 
-openOutfitMenu() {
-  Send {Down}{Down}{Down}{Enter}{Down}{Down}{Down}
+openVehicle() {
+  Send {Down}{Down}{Down}{Down}{Enter}
+}
+
+openVehicleOwner() {
+  Send {Down}{Down}{Down}{Down}{Down}{Enter}
+}
+
+openSettings() {
+  Send {Esc}
+  Sleep 700
+  Send {d}{d}{d}{d}
+  Sleep 400
+  Send {Enter}
+  Sleep 400
+  Send {s}{s}{s}{s}{s}
+  Sleep 400
+  Send {Enter}
+  Sleep 400
+  Send {s}{s}{s}{s}{s}
+  Sleep 200
+  Send {Enter}
+  Sleep 100
+  Send {Esc}{Esc}{Esc}{Esc}
 }
 
 openPhone() {
@@ -372,56 +437,106 @@ KillGame:
 ; Toggle VIP mode (if VIP/CEO/MC all interaction menu entries are offset by one)
 ToggleVIP:
   IsVIPActivated := !IsVIPActivated
-  if (IsVIPActivated) {
-    SplashTextOn 250, 20, VIP mode, VIP mode has been ACTIVATED
-  } else {
-    SplashTextOn 250, 20, VIP mode, VIP mode has been DEACTIVATED
-  }
-  Sleep 2000
-  SplashTextOff
-  bringGameIntoFocus()
+  statusVIP(IsVIPActivated)
   return
+
+; RetireVIP
+RetireVIP:
+  if (IsVIPActivated) {
+      openInteractionMenu(false)
+      Send {Enter}{Up}{Enter}{%IGB_Interaction%}
+      IsVIPActivated := false
+      statusVIP(IsVIPActivated)
+    } else {
+      statusVIP(IsVIPActivated)
+    }
+  return
+
+; RegisterCEO
+RegisterCEO:
+  if (IsVIPActivated) {
+      statusVIP(IsVIPActivated)
+    } else {
+      openInteractionMenu(false)
+      Send {Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Enter}{%IGB_Interaction%}
+      IsVIPActivated := true
+      statusVIP(IsVIPActivated)
+    }
+  return
+
+; RegisterMC
+RegisterMC:
+  if (IsVIPActivated) {
+      statusVIP(IsVIPActivated)
+    } else {
+      openInteractionMenu(false)
+      Send {Down}{Down}{Down}{Down}{Down}{Down}{Down}{Enter}{Enter}{%IGB_Interaction%}
+      IsVIPActivated := true
+      statusVIP(IsVIPActivated)
+    }
+  return
+
+; StorageMC
+StorageMC:
+  if (IsVIPActivated) {
+      openInteractionMenu(false)
+      Send {Enter}{Enter}{%IGB_Interaction%}
+    } else {
+      statusVIP(IsVIPActivated)
+    }
+  return
+
 
 ; Open up snack menu for manual selection (or stock check) of snacks
 SnackMenu:
   openInteractionMenu(IsVIPActivated)
-  openSnackMenu()
+  openInventory()
+  Send {Down}{Down}{Enter}
   return
 
 ; Automatic snacking. Eats 2 snacks from second snack slot and close menu.
 AutoHealth:
   openInteractionMenu(IsVIPActivated)
-  openSnackMenu()
+  openInventory()
+  Send {Down}{Down}{Enter}
   Send {Down}{Enter}{Enter}{%IGB_Interaction%}
   return
 
 ; Open up armor menu for manual selection (or stock check) of armor
 ArmorMenu:
   openInteractionMenu(IsVIPActivated)
-  openArmorMenu()
+  openInventory()
+  Send {Down}{Enter}
   return
 
 ; Equips super heavy armor and exits menu automatically
 AutoArmor:
   openInteractionMenu(IsVIPActivated)
-  openArmorMenu()
+  openInventory()
+  Send {Down}{Enter}
   Send {Down}{Down}{Down}{Down}{Enter}{%IGB_Interaction%}
   return
 
 ; Equips scarf to allow faster running with heist armor (see readme/misc)
 EquipScarf:
   openInteractionMenu(IsVIPActivated)
-  ; Opens scarf menu
-  Send {Down}{Down}{Down}{Enter}{Down}{Enter}
-  ; equip scarf and exit menu. This line can be changed to pick different scarfs.
-  Send {Up}{Up}{Up}{Up}{Right}{%IGB_Interaction%}
+  openStyle()
+  Send {Down}{Enter} ; Opens scarf men
+  Send {Up}{Up}{Up}{Up}{Right}{%IGB_Interaction%} ; equip scarf and exit menu. This line can be changed to pick different scarfs.
   return
 
 ; Cycle between your saved outfits
 CycleOutfit:
   openInteractionMenu(IsVIPActivated)
-  openOutfitMenu()
-  Send {Right}{Enter}{%IGB_Interaction%}
+  openStyle()
+  Send {Down}{Down}{Down}{Right}{Enter}{%IGB_Interaction%}
+  return
+
+; ThermalVision
+ThermalVision:
+  openInteractionMenu(IsVIPActivated)
+  openStyle()
+  Send {Down}{Enter}{Down}{Down}{Down}{Down}{Space}
   return
 
 ; Toggle passive mode
@@ -434,6 +549,39 @@ TogglePassive:
 RetrieveCar:
   openInteractionMenu(IsVIPActivated)
   Send {Down}{Down}{Down}{Down}{Enter}{Enter}{%IGB_Interaction%}
+  return
+
+; OpressorMKII
+OpressorMKII:
+  openInteractionMenu(IsVIPActivated)
+  openVehicleOwner()
+  Send {Up}{Enter}{Down}{Down} ; {Enter}{%IGB_Interaction%}
+  return
+
+; NanoDrone
+NanoDrone:
+  openInteractionMenu(IsVIPActivated)
+  openInventory()
+  Send {Up}{Up}{Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  return
+
+; RCBandito
+RCBandito:
+  openInteractionMenu(IsVIPActivated)
+  openInventory()
+  Send {Up}{Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  return
+
+; RCTank
+RCTank:
+  openInteractionMenu(IsVIPActivated)
+  openInventory()
+  Send {Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  return
+
+; ChangeMap
+ChangeMap:
+  openSettings()
   return
 
 ; Chooses on-call random heist from phone options
