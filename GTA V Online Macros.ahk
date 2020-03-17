@@ -30,9 +30,9 @@
 ;
 ; Read the wiki, propose features, fix and/or report bugs... it's all yours at
 ;
-;     https://github.com/2called-chaos/gtav-online-ahk
+;     https://github.com/2called-chaos/gtav-online-ahk  (Original)
+;     https://github.com/Drascor/gtav-online-ahk        (Fork)
 ;
-
 
 
 ; ==============================
