@@ -48,14 +48,14 @@ AutoHealthKey        := "F1" ; Automatic snacking. Eats 2 snacks from second sna
 ArmorMenuKey         := "+F2" ; Open Armor menu.
 AutoArmorKey         := "F2" ; Automatic armor equip (uses super heavy armor only).
 ThermalVisionKey     := "F24" ;
-RetrieveCarKey       := "F5" ; Request Personal Vehicle.
-OpressorMKIIKey      := "F24" ;
+RetrieveCarKey       := "F3" ; Request Personal Vehicle.
+OpressorMKIIKey      := "F5" ;
 NanoDroneKey         := "F24" ;
 RCBanditoKey         := "F24" ;
 RCTankKey            := "F24" ;
 TogglePassiveKey     := "F8" ; Toggle passive mode.
 EquipScarfKey        := "F24" ; Equip first scarf (heist outfit glitch, see readme/misc).
-CycleOutfitKey       := "F24" ; Equip next/cycle through saved outfits.
+CycleOutfitKey       := "F7" ; Equip next/cycle through saved outfits.
 KillGameKey          := "F24" ; Kill game process, requires pskill.exe
 ForceDisconnectKey   := "F24" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
 ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
@@ -66,19 +66,19 @@ ToggleVIPKey         := "F12" ; Toggle VIP mode (required when VIP/CEO/MC).
 RegisterCEOKey       := "F9" ;
 RegisterMCKey        := "F10" ;
 RetireVIPKey         := "F11" ;
-CEOBuzzardKey        := "F7" ; Spawn free CEO buzzard
-StorageMCKey         := "F24" ;
+CEOBuzzardKey        := "F6" ; Spawn free CEO buzzard
+StorageMCKey         := "F4" ;
 
 
-DialDialogKey        := "+l" ; Call GUI with a list of almost all numbers
+DialDialogKey        := "+Delete" ; Call GUI with a list of almost all numbers
 CallMechanicKey      := "F24" ; Call Mechanic
 CallPegasusKey       := "F24" ; Call Pegasus
 CallMerryweatherKey  := "F24" ; Call Merryweather
 CallInsuranceKey     := "F24" ; Call Insurance
-CallLesterKey        := "l" ; Call Lester
-SaveMoneyKey         := "F24" ; 
+CallLesterKey        := "Delete" ; Call Lester
+SaveMoneyKey         := "l" ; No Funciona
 
-ChangeMapKey         := "Numpad0" ;
+ChangeMapKey         := "Insert" ;Insert
 
 
 ; Options (should be fine out of the box)
@@ -184,7 +184,7 @@ Hotkey, %RegisterMCKey%, RegisterMC
 Hotkey, %RetireVIPKey%, RetireVIP
 Hotkey, %StorageMCKey%, StorageMC
 Hotkey, %ChangeMapKey%, ChangeMap
-; Hotkey, %SaveMoneyKey, SaveMoney
+Hotkey, %SaveMoneyKey%, SaveMoney
 
 ; Sets delay(ms) between keystrokes issued. Arguments are delay between keystrokes and press duration, respectively.
 ; They might be able to go lower but these values are pretty fast and work reliably.
@@ -199,18 +199,22 @@ Return
 ; === Functions ===
 ; =================
 
+; CenterWindow(WinTitle) {
+; WinGetPos,,, Width, Height, Grand Theft Auto V
+; WinMove, %WinTitle%,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
+; }
+
 statusVIP(IsVIPActivated) {
   if(IsVIPActivated) {
-  SplashTextOn 250, 20, VIP mode, VIP mode ACTIVATED
-  Sleep 700
-  SplashTextOff
-  bringGameIntoFocus()
+  Progress, b ct008000 CWnwhite fs14 zh0, VIP mode ACTIVO, , VIP mode, Verdana
   } else {
-  SplashTextOn 250, 20, VIP mode, VIP mode DEACTIVATEDXXXX
-  Sleep 700
-  SplashTextOff
-  bringGameIntoFocus()
+  Progress, b ctred CWnwhite fs14 zh0, VIP mode DESABILITADO, , VIP mode, Verdana
   }
+WinSet, TransColor, FFFFFF 150, VIP mode
+; WinMove, VIP mode, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+Sleep, 1000
+Progress, Off
+bringGameIntoFocus()
 }
 
 openInteractionMenu(isVIPActive) {
@@ -583,6 +587,13 @@ RCTank:
 ChangeMap:
   openSettings()
   return
+
+;SaveMoney
+SaveMoney:
+  Sleep 400
+  Send {Joy4}
+  Sleep 400
+return
 
 ; Chooses on-call random heist from phone options
 RandomHeist:
