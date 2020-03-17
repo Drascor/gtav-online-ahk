@@ -206,15 +206,25 @@ Return
 
 statusVIP(IsVIPActivated) {
   if(IsVIPActivated) {
-  Progress, b ct008000 CWnwhite fs14 zh0, VIP mode ACTIVO, , VIP mode, Verdana
+  Progress, b ct008000 CWnwhite fs14 zh0, %A_ThisFunc% - ACTIVO, , VIP mode, Verdana
   } else {
-  Progress, b ctred CWnwhite fs14 zh0, VIP mode DESABILITADO, , VIP mode, Verdana
+  Progress, b ctred CWnwhite fs14 zh0, %A_ThisFunc% - DESABILITADO, , VIP mode, Verdana
   }
-WinSet, TransColor, FFFFFF 150, VIP mode
-; WinMove, VIP mode, , 2810, 0 ; Use SpyMonitor to set position X, Y.
-Sleep, 1000
-Progress, Off
-bringGameIntoFocus()
+  WinSet, TransColor, FFFFFF 150, VIP mode
+  ; WinMove, VIP mode, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+  Sleep, 700
+  Progress, Off
+  bringGameIntoFocus()
+}
+
+msgFunc() {
+  msg00 := A_ThisLabel
+  Progress, b ct000FFF CWnwhite fs14 zh0, % msg00 Enable, , msgTitle, Verdana
+  WinSet, TransColor, FFFFFF 150, msgTitle
+  ; WinMove, msgTitle, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+  Sleep, 700
+  Progress, Off
+  msg00 := ""
 }
 
 openInteractionMenu(isVIPActive) {
@@ -258,7 +268,7 @@ openSettings() {
   Sleep 200
   Send {Enter}
   Sleep 100
-  Send {Esc}{Esc}{Esc}{Esc}
+  Send {Esc}{Esc}{Esc}{Esc}{Esc}
 }
 
 openPhone() {
@@ -442,6 +452,7 @@ KillGame:
 ToggleVIP:
   IsVIPActivated := !IsVIPActivated
   statusVIP(IsVIPActivated)
+  msgFunc()
   return
 
 ; RetireVIP
@@ -454,6 +465,7 @@ RetireVIP:
     } else {
       statusVIP(IsVIPActivated)
     }
+  msgFunc()
   return
 
 ; RegisterCEO
@@ -466,6 +478,7 @@ RegisterCEO:
       IsVIPActivated := true
       statusVIP(IsVIPActivated)
     }
+  msgFunc()
   return
 
 ; RegisterMC
@@ -478,6 +491,7 @@ RegisterMC:
       IsVIPActivated := true
       statusVIP(IsVIPActivated)
     }
+  msgFunc()
   return
 
 ; StorageMC
@@ -488,6 +502,7 @@ StorageMC:
     } else {
       statusVIP(IsVIPActivated)
     }
+  msgFunc()
   return
 
 
@@ -496,6 +511,7 @@ SnackMenu:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Down}{Down}{Enter}
+  msgFunc()
   return
 
 ; Automatic snacking. Eats 2 snacks from second snack slot and close menu.
@@ -504,6 +520,7 @@ AutoHealth:
   openInventory()
   Send {Down}{Down}{Enter}
   Send {Down}{Enter}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; Open up armor menu for manual selection (or stock check) of armor
@@ -511,6 +528,7 @@ ArmorMenu:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Down}{Enter}
+  msgFunc()
   return
 
 ; Equips super heavy armor and exits menu automatically
@@ -519,6 +537,7 @@ AutoArmor:
   openInventory()
   Send {Down}{Enter}
   Send {Down}{Down}{Down}{Down}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; Equips scarf to allow faster running with heist armor (see readme/misc)
@@ -527,6 +546,7 @@ EquipScarf:
   openStyle()
   Send {Down}{Enter} ; Opens scarf men
   Send {Up}{Up}{Up}{Up}{Right}{%IGB_Interaction%} ; equip scarf and exit menu. This line can be changed to pick different scarfs.
+  msgFunc()
   return
 
 ; Cycle between your saved outfits
@@ -534,6 +554,7 @@ CycleOutfit:
   openInteractionMenu(IsVIPActivated)
   openStyle()
   Send {Down}{Down}{Down}{Right}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; ThermalVision
@@ -541,18 +562,21 @@ ThermalVision:
   openInteractionMenu(IsVIPActivated)
   openStyle()
   Send {Down}{Enter}{Down}{Down}{Down}{Down}{Space}
+  msgFunc()
   return
 
 ; Toggle passive mode
 TogglePassive:
   openInteractionMenu(false) ; Ignore VIP status when going up
   Send {Up}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; Retrieve your currently active vehicle
 RetrieveCar:
   openInteractionMenu(IsVIPActivated)
   Send {Down}{Down}{Down}{Down}{Enter}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; OpressorMKII
@@ -560,6 +584,7 @@ OpressorMKII:
   openInteractionMenu(IsVIPActivated)
   openVehicleOwner()
   Send {Up}{Enter}{Down}{Down} ; {Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; NanoDrone
@@ -567,6 +592,7 @@ NanoDrone:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Up}{Up}{Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; RCBandito
@@ -574,6 +600,7 @@ RCBandito:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Up}{Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; RCTank
@@ -581,11 +608,18 @@ RCTank:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Up}{Up}{Up}{Enter}{%IGB_Interaction%}
+  msgFunc()
   return
 
 ; ChangeMap
 ChangeMap:
   openSettings()
+  Progress, b ct008000 CWnwhite fs14 zh0, Map ACTIVO, , msg00, Verdana
+  WinSet, TransColor, FFFFFF 150, msg00
+  WinMove, msg00, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+  Sleep, 1000
+  Progress, Off
+  msgFunc()
   return
 
 ;SaveMoney
@@ -593,7 +627,8 @@ SaveMoney:
   Sleep 400
   Send {Joy4}
   Sleep 400
-return
+  msgFunc()
+  return
 
 ; Chooses on-call random heist from phone options
 RandomHeist:
@@ -601,12 +636,14 @@ RandomHeist:
   sleep IntKeySendDelay
   scrollPhoneUp(2) ; scroll up twice to solo-q
   Send {Enter}{Enter}
+  msgFunc()
   return
 
 ; Calls in free CEO buzzard (if you are CEO)
 CEOBuzzard:
   openInteractionMenu(false)
   Send {Enter}{Up 2}{Enter}{Down 4}{Enter}
+  msgFunc()
   return
 
 ; Show a list of chat snippets to type out (chat must be opened)
