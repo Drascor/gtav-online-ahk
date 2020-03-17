@@ -260,15 +260,6 @@ openSettings() {
   Sleep 400
   Send {Enter}
   Sleep 400
-  Send {s}{s}{s}{s}{s}
-  Sleep 400
-  Send {Enter}
-  Sleep 400
-  Send {s}{s}{s}{s}{s}
-  Sleep 200
-  Send {Enter}
-  Sleep 100
-  Send {Esc}{Esc}{Esc}{Esc}{Esc}
 }
 
 openPhone() {
@@ -614,11 +605,16 @@ RCTank:
 ; ChangeMap
 ChangeMap:
   openSettings()
-  Progress, b ct008000 CWnwhite fs14 zh0, Map ACTIVO, , msg00, Verdana
-  WinSet, TransColor, FFFFFF 150, msg00
-  WinMove, msg00, , 2810, 0 ; Use SpyMonitor to set position X, Y.
-  Sleep, 1000
-  Progress, Off
+  Send {s}{s}{s}{s}{s}
+  Sleep 400
+  Send {Enter}
+  Sleep 400
+  Send {s}{s}{s}{s}{s}
+  Sleep 200
+  Send {Enter}
+  Sleep 100
+  Send {Esc}{Esc}{Esc}{Esc}{Esc}
+  Sleep 100
   msgFunc()
   return
 
