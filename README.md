@@ -1,3 +1,6 @@
+# Forked from: https://github.com/2called-chaos/gtav-online-ahk
+
+
 # GTA V Online AHK-Macros
 
 Provides hotkeys for several useful features in GTA V:Online, see list further down.
@@ -81,6 +84,23 @@ The following calls can be directly bound to a hotkey (adding more is trivial):
 
 You can reach more (useful or useless contacts) by binding `DialDialog`
 
+## News Adds
+
+* **ThermalVision** - 
+* **OpressorMKII** - 
+* **NanoDrone** - 
+* **RCBandito** - 
+* **RCTank** - 
+* **RegisterCEO** - 
+* **RegisterMC** - 
+* **RetireVIP** - 
+* **StorageMC** - 
+* **ChangeMap** - In Progress, it does not work.
+* **SaveMoney** - 
+* **ReloadMacro** - 
+* **PauseMacro** - 
+* **SuspendMacro** - 
+* **ExitMacro** - 
 
 ## Miscellaneous
 
