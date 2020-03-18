@@ -1,7 +1,6 @@
-;+ = shift, ! = Alt, ^ = Control, # = Win (tecla Windows)
-;Ejemplo remplazar "s.c " por "Saludos cordiales " "::s.c::Saludos cordiales"
 ;
-; GTA V Online AHK-Macros v1.1.1 by 2called-chaos
+; GTA V Online AHK-Macros v1.2 by Drascor
+; Forked from 2called-chaos
 ; based on/inspired by GTA V Useful Macros v4.21 by twentyafterfour
 ;
 ; # Description
@@ -11,7 +10,7 @@
 ;
 ; # General Notes
 ;
-;   * Read the god damn readme, please! https://github.com/2called-chaos/gtav-online-ahk/blob/master/README.md
+;   * Read the god damn readme, please! https://github.com/Drascor/gtav-online-ahk/blob/master/README.md
 ;   * After cutscenes or just from time to time the interaction menu lags
 ;     and the macro won't work. Periodically, especially after loading/cutscenes
 ;     press m and backspace (aka open the menu once)
@@ -25,13 +24,15 @@
 ; the heading "Basic Usage and Syntax" with the name "Key List".
 ; They can also be found at https://www.autohotkey.com/docs/KeyList.htm
 ;
+; # CheatSheet
+;+ = shift, ! = Alt, ^ = Control, # = Win (tecla Windows)
 ;
 ; # FAQ, Docs, Source, Bugs, etc.
 ;
 ; Read the wiki, propose features, fix and/or report bugs... it's all yours at
 ;
-;     https://github.com/2called-chaos/gtav-online-ahk  (Original)
 ;     https://github.com/Drascor/gtav-online-ahk        (Fork)
+;     https://github.com/2called-chaos/gtav-online-ahk  (Original)
 ;
 
 
@@ -56,8 +57,8 @@ RCTankKey            := "F24" ;
 TogglePassiveKey     := "F8" ; Toggle passive mode.
 EquipScarfKey        := "F24" ; Equip first scarf (heist outfit glitch, see readme/misc).
 CycleOutfitKey       := "F7" ; Equip next/cycle through saved outfits.
-KillGameKey          := "F24" ; Kill game process, requires pskill.exe
-ForceDisconnectKey   := "F24" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
+KillGameKey          := "^+Delete" ; Kill game process, requires pskill.exe
+ForceDisconnectKey   := "^Delete" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
 ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
 RandomHeistKey       := "F24" ; Chooses on-call random heist from phone options
 
@@ -70,22 +71,29 @@ CEOBuzzardKey        := "F6" ; Spawn free CEO buzzard
 StorageMCKey         := "F4" ;
 
 
-DialDialogKey        := "+Delete" ; Call GUI with a list of almost all numbers
+DialDialogKey        := "p" ; Call GUI with a list of almost all numbers
 CallMechanicKey      := "F24" ; Call Mechanic
 CallPegasusKey       := "F24" ; Call Pegasus
 CallMerryweatherKey  := "F24" ; Call Merryweather
 CallInsuranceKey     := "F24" ; Call Insurance
-CallLesterKey        := "Delete" ; Call Lester
-SaveMoneyKey         := "l" ; No Funciona
+CallLesterKey        := "l" ; Call Lester
+SaveMoneyKey         := "F24" ; No Funciona
 
-ChangeMapKey         := "Insert" ;Insert
+ChangeMapKey         := "Insert" ;ChangeMap
+ReloadMacroKey       := "F24" ; Reload this script
+PauseMacroKey        := "F24" ; Pause this script
+SuspendMacroKey      := "F24" ; Suspend this script
+ExitMacroKey         := "F24" ; Exit this script
 
 
 ; Options (should be fine out of the box)
 DoConfirmKill        := true  ; If true the KillGame action will ask for confirmation before killing the process
 DoConfirmDisconnect  := true  ; If true the ForceDisconnect action will ask for confirmation before suspending the process
-IntDisconnectDelay   := 10    ; Amount of seconds to freeze the process for, 10 works fine
+IntDisconnectDelay   := 7     ; Amount of seconds to freeze the process for, 10 works fine
 IsVIPActivated       := false ; Initial status of CEO/VIP mode (after (re)loading script)
+; SetWinX              := 2810  ; Use SpyMonitor to set position X
+; SetWinY              := 0     ; Use SpyMonitor to set position Y
+SetTransparency      := 150   ; Trasparency MsgBox
 
 
 ; Chat snippets (you can add more, comment them out or remove them, the pushs that is)
@@ -185,6 +193,10 @@ Hotkey, %RetireVIPKey%, RetireVIP
 Hotkey, %StorageMCKey%, StorageMC
 Hotkey, %ChangeMapKey%, ChangeMap
 Hotkey, %SaveMoneyKey%, SaveMoney
+Hotkey, %ReloadMacroKey%, ReloadMacro
+Hotkey, %PauseMacroKey%, PauseMacro
+Hotkey, %SuspendMacroKey%, SuspendMacro
+Hotkey, %ExitMacroKey%, ExitMacro
 
 ; Sets delay(ms) between keystrokes issued. Arguments are delay between keystrokes and press duration, respectively.
 ; They might be able to go lower but these values are pretty fast and work reliably.
@@ -199,31 +211,37 @@ Return
 ; === Functions ===
 ; =================
 
-; CenterWindow(WinTitle) {
-; WinGetPos,,, Width, Height, Grand Theft Auto V
-; WinMove, %WinTitle%,, (A_ScreenWidth/2)-(Width/2), (A_ScreenHeight/2)-(Height/2)
-; }
-
 statusVIP(IsVIPActivated) {
+  msgTitle := A_ThisLabel
   if(IsVIPActivated) {
-  Progress, b ct008000 CWnwhite fs14 zh0, %A_ThisFunc% - ACTIVO, , VIP mode, Verdana
+  Progress, b ct008000 CWnwhite fs14 zh0, %A_ThisFunc% - ACTIVO, , %msgTitle%, Verdana
   } else {
-  Progress, b ctred CWnwhite fs14 zh0, %A_ThisFunc% - DESABILITADO, , VIP mode, Verdana
+  Progress, b ctred CWnwhite fs14 zh0, %A_ThisFunc% - DESABILITADO, , %msgTitle%, Verdana
   }
-  WinSet, TransColor, FFFFFF 150, VIP mode
-  ; WinMove, VIP mode, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+  setWin()
   Sleep, 700
   Progress, Off
   bringGameIntoFocus()
 }
 
+setWin() {
+  msgTitle := A_ThisLabel
+  global SetWinX
+  global SetWinY
+  global SetTransparency
+  WinSet, TransColor, FFFFFF %SetTransparency%, %msgTitle%
+  WinMove, %msgTitle%, , %SetWinX%, %SetWinY%
+  msgTitle := ""
+}
+
 msgFunc() {
+  msgTitle := A_ThisLabel
   msg00 := A_ThisLabel
-  Progress, b ct000FFF CWnwhite fs14 zh0, % msg00 Enable, , msgTitle, Verdana
-  WinSet, TransColor, FFFFFF 150, msgTitle
-  ; WinMove, msgTitle, , 2810, 0 ; Use SpyMonitor to set position X, Y.
+  Progress, b ct000FFF CWnwhite fs14 zh0, % msg00 " Enable", , %msgTitle%, Verdana
+  setWin()
   Sleep, 700
   Progress, Off
+  msgTitle := ""
   msg00 := ""
 }
 
@@ -385,12 +403,17 @@ _phonePointerCol(num) {
 }
 
 splashCountdown(title, message, seconds, addZero = false) {
+  msgTitle := A_ThisLabel
   Loop %seconds% {
-    SplashTextOn 250, 20, %title%, % StrReplace(message, "%i", seconds + 1 - A_Index)
+    ; SplashTextOn 250, 20, %title%, % StrReplace(message, "%i", seconds + 1 - A_Index)
+    Progress, b ct008000 CWnwhite fs14 zh0, % StrReplace(message, "%i", seconds + 1 - A_Index), , %msgTitle%, Verdana
+    setWin()
     Sleep 1000
   }
   if(addZero) {
-    SplashTextOn 250, 20, %title%, % StrReplace(message, "%i", 0)
+    ; SplashTextOn 250, 20, %title%, % StrReplace(message, "%i", 0)
+    Progress, b ct008000 CWnwhite fs14 zh0, % StrReplace(message, "%i", 0), , %msgTitle%, Verdana
+    setWin()
     Sleep 1000
   }
 }
@@ -410,33 +433,53 @@ bringGameIntoFocus(applyDelay = false) {
 
 ; Force the game to disconnect by suspending the process for 10 seconds
 ; Requires pssuspend.exe (see readme)
+
+WinMoveMsgBox:
+  global SetWinX
+  global SetWinY
+  global SetTransparency
+  If WinExist(WinName)
+    SetTimer, WinMoveMsgBox, OFF
+  WinSet, TransColor, EEAA99 %SetTransparency%, %WinName%
+  WinMove, %WinName%, , %SetWinX%, %SetWinY%
+return
+
 ForceDisconnect:
   if (DoConfirmDisconnect) {
-    MsgBox, 1, , Force disconnect?, 5
+    WinName := A_ThisLabel                ;
+    SetTimer, WinMoveMsgBox, 50       ;
+    Sleep 100                         ;
+    MsgBox, 1, %WinName%, Force disconnect?, 5
     IfMsgBox, Cancel
-      Return
+      return
     IfMsgBox, Timeout
-      Return
+      return
   }
   Run, pssuspend gta5.exe ,,Hide
   splashCountdown("ForceDisconnect", "Hang on tight (%i)", IntDisconnectDelay, true)
   Run, pssuspend -r gta5.exe ,,Hide
   Sleep 1000
-  SplashTextOff
+  ; SplashTextOff
+  Progress, Off
   bringGameIntoFocus()
+  msgFunc()
   return
 
 ; kill game process
 ; Requires pskill.exe (see readme)
 KillGame:
   if (DoConfirmKill) {
-    MsgBox, 1, , Kill game process?, 5
+    WinName := A_ThisLabel                ;
+    SetTimer, WinMoveMsgBox, 50       ;
+    Sleep 100                         ;
+    MsgBox, 1, %WinName%, Kill game process?, 5
     IfMsgBox, Cancel
-      Return
+      return
     IfMsgBox, Timeout
-      Return
+      return
   }
   Run, pskill gta5.exe ,,Hide
+  msgFunc()
   return
 
 ; Toggle VIP mode (if VIP/CEO/MC all interaction menu entries are offset by one)
@@ -456,7 +499,6 @@ RetireVIP:
     } else {
       statusVIP(IsVIPActivated)
     }
-  msgFunc()
   return
 
 ; RegisterCEO
@@ -502,6 +544,7 @@ SnackMenu:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Down}{Down}{Enter}
+  Send {Down}
   msgFunc()
   return
 
@@ -519,6 +562,7 @@ ArmorMenu:
   openInteractionMenu(IsVIPActivated)
   openInventory()
   Send {Down}{Enter}
+  Send {Down}{Down}{Down}{Down}
   msgFunc()
   return
 
@@ -742,4 +786,42 @@ CallInsurance:
 CallLester:
   ;makeCall(12, true)
   dialNumber("346-555-0102", true)
+  return
+
+; =====================
+; === Option Script ===
+; =====================
+
+ReloadMacro:
+  msgFunc()
+  Reload                        ;
+  Sleep 500                     ;
+  WinName := "Reload Script"    ;
+  SetTimer, WinMoveMsgBox, 50   ;
+  Sleep 100
+  MsgBox, 4, %WinName%, The script could not be reloaded. Would you like to open it for editing?
+  IfMsgBox, Yes, Edit
+  WinWait, %WinName%, , 3
+  if ErrorLevel
+  {
+      MsgBox, WinWait timed out.
+      return
+  }
+  else
+      WinMinimize                ; Minimize the window found by WinWait.
+  return
+
+PauseMacro:
+  Pause                         ;
+  msgFunc()
+  return
+
+SuspendMacro:
+  msgFunc()
+  Suspend                        ;
+  return
+
+ExitMacro:
+  msgFunc()
+  ExitApp                        ;
   return
