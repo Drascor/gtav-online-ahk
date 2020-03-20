@@ -44,46 +44,51 @@
 ;   https://www.autohotkey.com/docs/KeyList.htm
 ; WARNING: If you don't want to use a certain binding use "F24"
 ;          or any other valid key or it will break!
-SnackMenuKey         := "+F1" ; Open Snack menu (+ = shift, rtfm).
-AutoHealthKey        := "F1" ; Automatic snacking. Eats 2 snacks from second snack slot.
-ArmorMenuKey         := "+F2" ; Open Armor menu.
-AutoArmorKey         := "F2" ; Automatic armor equip (uses super heavy armor only).
-ThermalVisionKey     := "F24" ;
-RetrieveCarKey       := "F3" ; Request Personal Vehicle.
-OpressorMKIIKey      := "F5" ;
-NanoDroneKey         := "F24" ;
-RCBanditoKey         := "F24" ;
-RCTankKey            := "F24" ;
+;
+;--Combat--
+SnackMenuKey         := "^+F1" ; Open Snack menu (+ = shift, rtfm).
+AutoHealthKey        := "^F1" ; Automatic snacking. Eats 2 snacks from second snack slot.
+ArmorMenuKey         := "^+F2" ; Open Armor menu.
+AutoArmorKey         := "^F2" ; Automatic armor equip (uses super heavy armor only).
 TogglePassiveKey     := "F8" ; Toggle passive mode.
+;--Charapter--
 EquipScarfKey        := "F24" ; Equip first scarf (heist outfit glitch, see readme/misc).
-CycleOutfitKey       := "F7" ; Equip next/cycle through saved outfits.
-KillGameKey          := "^+Delete" ; Kill game process, requires pskill.exe
-ForceDisconnectKey   := "^Delete" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
-ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
-RandomHeistKey       := "F24" ; Chooses on-call random heist from phone options
-
-
+CycleOutfitKey       := "^F3" ; Equip next/cycle through saved outfits.
+ThermalVisionKey     := "^F4" ;
+;--VIP--
 ToggleVIPKey         := "F12" ; Toggle VIP mode (required when VIP/CEO/MC).
 RegisterCEOKey       := "F9" ;
 RegisterMCKey        := "F10" ;
 RetireVIPKey         := "F11" ;
-CEOBuzzardKey        := "F6" ; Spawn free CEO buzzard
-StorageMCKey         := "F4" ;
-
-
+CEOBuzzardKey        := "^F8" ; Spawn free CEO buzzard
+StorageMCKey         := "^F7" ;
+;--Vehicle--
+RetrieveCarKey       := "^F5" ; Request Personal Vehicle.
+OpressorMKIIKey      := "^F6" ;
+NanoDroneKey         := "F24" ;
+RCBanditoKey         := "F24" ;
+RCTankKey            := "F24" ;
+;--Called--
 DialDialogKey        := "p" ; Call GUI with a list of almost all numbers
 CallMechanicKey      := "F24" ; Call Mechanic
 CallPegasusKey       := "F24" ; Call Pegasus
 CallMerryweatherKey  := "F24" ; Call Merryweather
 CallInsuranceKey     := "F24" ; Call Insurance
 CallLesterKey        := "l" ; Call Lester
-SaveMoneyKey         := "F24" ; No Funciona
-
+;--Word--
+KillGameKey          := "^+Delete" ; Kill game process, requires pskill.exe
+ForceDisconnectKey   := "^Delete" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
 ChangeMapKey         := "Insert" ;ChangeMap
-ReloadMacroKey       := "F24" ; Reload this script
-PauseMacroKey        := "F24" ; Pause this script
+RandomHeistKey       := "F24" ; Chooses on-call random heist from phone options
+ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
+;--Macro--
+SaveMoneyKey         := "F24" ; No Funciona
+ReloadMacroKey       := "^NumpadSub" ; Reload this script
+PauseMacroKey        := "Numpad1" ; Pause this script
 SuspendMacroKey      := "F24" ; Suspend this script
 ExitMacroKey         := "F24" ; Exit this script
+MacroGuiKey          := "Numpad0" ; Show list macros
+MacroEditGuiKey      := "F24" ; In Progress, ¡¡¡¡No usar!!!
 
 
 ; Options (should be fine out of the box)
@@ -91,8 +96,8 @@ DoConfirmKill        := true  ; If true the KillGame action will ask for confirm
 DoConfirmDisconnect  := true  ; If true the ForceDisconnect action will ask for confirmation before suspending the process
 IntDisconnectDelay   := 7     ; Amount of seconds to freeze the process for, 10 works fine
 IsVIPActivated       := false ; Initial status of CEO/VIP mode (after (re)loading script)
-; SetWinX              := 2810  ; Use SpyMonitor to set position X
-; SetWinY              := 0     ; Use SpyMonitor to set position Y
+;SetWinX              := 2810  ; Use SpyMonitor to set position X
+;SetWinY              := 0     ; Use SpyMonitor to set position Y
 SetTransparency      := 150   ; Trasparency MsgBox
 
 
@@ -157,46 +162,104 @@ ArrayPhonebook.push("273-555-0155  - (useless) Truthseeker Helpline")
 
 #NoEnv
 SetWorkingDir A_ScriptDir
+CFG = GTA Quick.ini
 
 ; Disables hotkeys when alt-tabbed or GTA is closed.
 #IfWinActive ahk_class grcWindow
 
 ; Hotkey/Function mapping
+;
+
+;--Combat--
 Hotkey, %SnackMenuKey%, SnackMenu
 Hotkey, %AutoHealthKey%, AutoHealth
 Hotkey, %ArmorMenuKey%, ArmorMenu
 Hotkey, %AutoArmorKey%, AutoArmor
 Hotkey, %TogglePassiveKey%, TogglePassive
-Hotkey, %RetrieveCarKey%, RetrieveCar
-Hotkey, %EquipScarfKey%, EquipScarf
+;--Charapter--
 Hotkey, %CycleOutfitKey%, CycleOutfit
+Hotkey, %ThermalVisionKey%, ThermalVision
+Hotkey, %EquipScarfKey%, EquipScarf
+;--VIP--
 Hotkey, %ToggleVIPKey%, ToggleVIP
-Hotkey, %KillGameKey%, KillGame
-Hotkey, %ForceDisconnectKey%, ForceDisconnect
-Hotkey, %RandomHeistKey%, RandomHeist
-Hotkey, %ChatSnippetsKey%, ChatSnippets
+Hotkey, %RegisterCEOKey%, RegisterCEO
+Hotkey, %RegisterMCKey%, RegisterMC
+Hotkey, %RetireVIPKey%, RetireVIP
 Hotkey, %CEOBuzzardKey%, CEOBuzzard
+Hotkey, %StorageMCKey%, StorageMC
+;--Vehicle--
+Hotkey, %RetrieveCarKey%, RetrieveCar
+Hotkey, %OpressorMKIIKey%, OpressorMKII
+Hotkey, %NanoDroneKey%, NanoDrone
+Hotkey, %RCBanditoKey%, RCBandito
+Hotkey, %RCTankKey%, RCTank
+;--Called--
 Hotkey, %DialDialogKey%, DialDialog
 Hotkey, %CallMechanicKey%, CallMechanic
 Hotkey, %CallPegasusKey%, CallPegasus
 Hotkey, %CallMerryweatherKey%, CallMerryweather
 Hotkey, %CallInsuranceKey%, CallInsurance
 Hotkey, %CallLesterKey%, CallLester
-Hotkey, %ThermalVisionKey%, ThermalVision
-Hotkey, %OpressorMKIIKey%, OpressorMKII
-Hotkey, %NanoDroneKey%, NanoDrone
-Hotkey, %RCBanditoKey%, RCBandito
-Hotkey, %RCTankKey%, RCTank
-Hotkey, %RegisterCEOKey%, RegisterCEO
-Hotkey, %RegisterMCKey%, RegisterMC
-Hotkey, %RetireVIPKey%, RetireVIP
-Hotkey, %StorageMCKey%, StorageMC
+;--Word--
+Hotkey, %KillGameKey%, KillGame
+Hotkey, %ForceDisconnectKey%, ForceDisconnect
 Hotkey, %ChangeMapKey%, ChangeMap
+Hotkey, %RandomHeistKey%, RandomHeist
+Hotkey, %ChatSnippetsKey%, ChatSnippets
+;--Macro--
 Hotkey, %SaveMoneyKey%, SaveMoney
 Hotkey, %ReloadMacroKey%, ReloadMacro
 Hotkey, %PauseMacroKey%, PauseMacro
 Hotkey, %SuspendMacroKey%, SuspendMacro
 Hotkey, %ExitMacroKey%, ExitMacro
+Hotkey, %MacroGuiKey%, MacroGui
+Hotkey, %MacroEditGuiKey%, MacroEditGui
+
+ArrayMacros := []
+ArrayMacros.push(";--Combat--")
+ArrayMacros.push("SnackMenu - " SnackMenuKey)
+ArrayMacros.push("AutoHealth - " AutoHealthKey)
+ArrayMacros.push("ArmorMenu - " ArmorMenuKey)
+ArrayMacros.push("AutoArmor - " AutoArmorKey)
+ArrayMacros.push("TogglePassive - " TogglePassiveKey)
+ArrayMacros.push(";--Charapter--")
+ArrayMacros.push("CycleOutfit - " CycleOutfitKey)
+ArrayMacros.push("ThermalVision - " ThermalVisionKey)
+ArrayMacros.push("EquipScarf - " EquipScarfKey)
+ArrayMacros.push(";--VIP--")
+ArrayMacros.push("ToggleVIP - " ToggleVIPKey)
+ArrayMacros.push("RegisterCEO - " RegisterCEOKey)
+ArrayMacros.push("RegisterMC - " RegisterMCKey)
+ArrayMacros.push("RetireVIP - " RetireVIPKey)
+ArrayMacros.push("CEOBuzzard - " CEOBuzzardKey)
+ArrayMacros.push("StorageMC - " StorageMCKey)
+ArrayMacros.push(";--Vehicle--")
+ArrayMacros.push("RetrieveCar - " RetrieveCarKey)
+ArrayMacros.push("OpressorMKII - " OpressorMKIIKey)
+ArrayMacros.push("NanoDrone - " NanoDroneKey)
+ArrayMacros.push("RCBandito - " RCBanditoKey)
+ArrayMacros.push("RCTank - " RCTankKey)
+ArrayMacros.push(";--Called--")
+ArrayMacros.push("DialDialog - " DialDialogKey)
+ArrayMacros.push("CallMechanic - " CallMechanicKey)
+ArrayMacros.push("CallPegasus - " CallPegasusKey)
+ArrayMacros.push("CallMerryweather - " CallMerryweatherKey)
+ArrayMacros.push("CallInsurance - " CallInsuranceKey)
+ArrayMacros.push("CallLester - " CallLesterKey)
+ArrayMacros.push(";--Word--")
+ArrayMacros.push("KillGame - " KillGameKey)
+ArrayMacros.push("ForceDisconnect - " ForceDisconnectKey)
+ArrayMacros.push("ChangeMap - " ChangeMapKey)
+ArrayMacros.push("RandomHeist - " RandomHeistKey)
+ArrayMacros.push("ChatSnippets - " ChatSnippetsKey)
+ArrayMacros.push(";--Macro--")
+ArrayMacros.push("SaveMoney - " SaveMoneyKey)
+ArrayMacros.push("ReloadMacro - " ReloadMacroKey)
+ArrayMacros.push("PauseMacro - " PauseMacroKey)
+ArrayMacros.push("SuspendMacro - " SuspendMacroKey)
+ArrayMacros.push("ExitMacro - " ExitMacroKey)
+ArrayMacros.push("MacroGui - " MacroGuiKey)
+ArrayMacros.push("MacroEditGui - " MacroEditGuiKey)
 
 ; Sets delay(ms) between keystrokes issued. Arguments are delay between keystrokes and press duration, respectively.
 ; They might be able to go lower but these values are pretty fast and work reliably.
@@ -237,7 +300,7 @@ setWin() {
 msgFunc() {
   msgTitle := A_ThisLabel
   msg00 := A_ThisLabel
-  Progress, b ct000FFF CWnwhite fs14 zh0, % msg00 " Enable", , %msgTitle%, Verdana
+  Progress, b ct000FFF CWnwhite fs14 zh0, % msg00 " - Activated", , %msgTitle%, Verdana
   setWin()
   Sleep, 700
   Progress, Off
@@ -470,8 +533,8 @@ ForceDisconnect:
 KillGame:
   if (DoConfirmKill) {
     WinName := A_ThisLabel                ;
-    SetTimer, WinMoveMsgBox, 50       ;
-    Sleep 100                         ;
+    SetTimer, WinMoveMsgBox, 50           ;
+    Sleep 100                             ;
     MsgBox, 1, %WinName%, Kill game process?, 5
     IfMsgBox, Cancel
       return
@@ -486,7 +549,6 @@ KillGame:
 ToggleVIP:
   IsVIPActivated := !IsVIPActivated
   statusVIP(IsVIPActivated)
-  msgFunc()
   return
 
 ; RetireVIP
@@ -723,17 +785,22 @@ _ChatSnippetsTypeout:
 
 ; Phone calls
 DialDialog:
+  global SetWinX
+  global SetWinY
+  global SetTransparency
   pbl := ""
   For each, item in ArrayPhonebook
     pbl .= (!pbl ? "" : "|") item
   Gui, DIAL:add, Text, , double click item
-  Gui, DIAL:Font,, Courier New
+  Gui, DIAL:Font, s10, Verdana
   Gui, DIAL:add, ListBox, w500 h250 vPhoneNumberSelect g_DialDialogMakeCallFromSelect, %pbl%
-  Gui, DIAL:Font,, Arial
+  Gui, DIAL:Font, s9, Verdana
   Gui, DIAL:add, Text, , or type number:
   Gui, DIAL:add, Edit, w500 vPhoneNumber,
   Gui, DIAL:add, Button, w500 Default g_DialDialogMakeCall, make call...
-  Gui, DIAL:show
+  Gui +LastFound  ; Make the GUI window the last found window for use by the line below.
+  WinSet, TransColor, EEAA99 %SetTransparency%,
+  Gui, DIAL:show, x%SetWinX% y%SetWinY%,
   return
 
 DIALGuiEscape:
@@ -824,4 +891,78 @@ SuspendMacro:
 ExitMacro:
   msgFunc()
   ExitApp                        ;
+  return
+
+
+; ===========
+; === GUI ===
+; ===========
+
+MacroGui:
+  global SetWinX
+  global SetWinY
+  global SetTransparency
+  mcr := ""
+  ; MacroSelect := 0
+  For each, item in ArrayMacros
+    mcr .= (!mcr ? "" : "|") item
+  Gui, Macro:add, ListBox, w200 h300 vMacroSelect g_MacroGuiDialogFromSelect, %mcr%
+  Gui, Macro:Font, s9, Verdana
+  Gui, Macro:add, Button, w0 Default g_MacroGuiDialogMake, ok
+  Gui, Macro:show, x%SetWinX% y%SetWinY%,
+  ; Gui +LastFound  ; Make the GUI window the last found window for use by the line below.
+  WinSet, TransColor, EEAA99 %SetTransparency%, Macro
+  ; WinWait, %Macro%,,1000
+  ; bringGameIntoFocus()
+  return
+
+MacroGuiEscape:
+  Gui, Macro:cancel
+  Gui, Macro:destroy
+  bringGameIntoFocus()
+  return
+
+MacroGuiClose:
+  Gui, Macro:cancel
+  Gui, Macro:destroy
+  bringGameIntoFocus()
+  return
+
+_MacroGuiDialogFromSelect:
+  if(A_GuiEvent = "DoubleClick")
+    GoTo _MacroGuiDialogMake
+  return
+
+_MacroGuiDialogMake:
+  Gui, Macro:submit
+  MacroSelectClean := RegExReplace(MacroSelect, " -.*", "")
+  Gui, Macro:destroy
+  if IsLabel(MacroSelectClean)
+  GoTo %MacroSelectClean%
+  return
+
+
+;_____________________________________________
+MacroEditGui:
+  global SetWinX
+  global SetWinY
+  global SetTransparency
+;   mcrn := ""
+;   mcrk := ""
+;   For each, item in ArrayMacros
+;     mcre .= (!mcre ? "" : "|") item
+;     ; mcrn := RegExReplace(RegExReplace(mcre, " -.*", "")mcre, " -.*", "")
+;     ; mcrk := RegExReplace(RegExReplace(mcre, ".*- ", "")mcre, " -.*", "")
+;   Gui, MacroS:Add, Text,, %mcre%
+;   ; Gui, MacroS:Add, Hotkey,vmcrk ym ,%mcrk%
+
+; ;_____________________________________________
+;   Gui, MacroS:Font, s9, Verdana
+;   Gui, MacroS:show, x%SetWinX% y%SetWinY%,
+;   Gui +LastFound  ; Make the GUI window the last found window for use by the line below.
+;   WinSet, TransColor, EEAA99 %SetTransparency%, MacroS
+;   MsgBox, % mcrn
+;   Sleep 10000
+;   Gui, MacroS:cancel
+;   Gui, MacroS:destroy
   return
