@@ -97,10 +97,10 @@ IniRead,DoConfirmDisconnect,%CFG%,Settings,DoConfirmDisconnect
 IniRead,IntDisconnectDelay,%CFG%,Settings,IntDisconnectDelay
 IniRead,IsVIPActivated,%CFG%,Settings,IsVIPActivated
 IniRead,SetTransparency,%CFG%,Settings,SetTransparency
-IniRead,SetWinX,%CFG%,Settings,SetWinX
-IniRead,SetWinY,%CFG%,Settings,SetWinY
-SetWinXm             = x%SetWinX%  ; Use SpyMonitor to set position X. (A_ScreenWidth/2)-(Width/2)
-SetWinYm             = y%SetWinY%    ; Use SpyMonitor to set position Y. (A_ScreenHeight/2)-(Height/2)
+;IniRead,SetWinX,%CFG%,Settings,SetWinX
+;IniRead,SetWinY,%CFG%,Settings,SetWinY
+;SetWinXm             = x%SetWinX%  ; Use SpyMonitor to set position X. (A_ScreenWidth/2)-(Width/2)
+;SetWinYm             = y%SetWinY%    ; Use SpyMonitor to set position Y. (A_ScreenHeight/2)-(Height/2)
 
 ; ================================================
 ; === Are you sure you want to scroll further? ===
