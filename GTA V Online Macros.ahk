@@ -1,5 +1,5 @@
 ;
-; GTA V Online AHK-Macros v1.2 by Drascor
+; GTA V Online AHK-Macros v1.3 by Drascor
 ; Forked from 2called-chaos
 ; based on/inspired by GTA V Useful Macros v4.21 by twentyafterfour
 ;
@@ -24,8 +24,6 @@
 ; the heading "Basic Usage and Syntax" with the name "Key List".
 ; They can also be found at https://www.autohotkey.com/docs/KeyList.htm
 ;
-; # CheatSheet
-;+ = shift, ! = Alt, ^ = Control, # = Win (tecla Windows)
 ;
 ; # FAQ, Docs, Source, Bugs, etc.
 ;
@@ -40,65 +38,13 @@
 ; === CONFIGURATION GOES vvv ===
 ; ==============================
 
-; Bindings (bind the desired functions to a key of your choice)
-;   https://www.autohotkey.com/docs/KeyList.htm
-; WARNING: If you don't want to use a certain binding use "F24"
-;          or any other valid key or it will break!
-;
-;--Combat--
-SnackMenuKey         := "^+F1" ; Open Snack menu (+ = shift, rtfm).
-AutoHealthKey        := "^F1" ; Automatic snacking. Eats 2 snacks from second snack slot.
-ArmorMenuKey         := "^+F2" ; Open Armor menu.
-AutoArmorKey         := "^F2" ; Automatic armor equip (uses super heavy armor only).
-TogglePassiveKey     := "F8" ; Toggle passive mode.
-;--Charapter--
-EquipScarfKey        := "F24" ; Equip first scarf (heist outfit glitch, see readme/misc).
-CycleOutfitKey       := "^F3" ; Equip next/cycle through saved outfits.
-ThermalVisionKey     := "^F4" ;
-;--VIP--
-ToggleVIPKey         := "F12" ; Toggle VIP mode (required when VIP/CEO/MC).
-RegisterCEOKey       := "F9" ;
-RegisterMCKey        := "F10" ;
-RetireVIPKey         := "F11" ;
-CEOBuzzardKey        := "^F8" ; Spawn free CEO buzzard
-StorageMCKey         := "^F7" ;
-;--Vehicle--
-RetrieveCarKey       := "^F5" ; Request Personal Vehicle.
-OpressorMKIIKey      := "^F6" ;
-NanoDroneKey         := "F24" ;
-RCBanditoKey         := "F24" ;
-RCTankKey            := "F24" ;
-;--Called--
-DialDialogKey        := "p" ; Call GUI with a list of almost all numbers
-CallMechanicKey      := "F24" ; Call Mechanic
-CallPegasusKey       := "F24" ; Call Pegasus
-CallMerryweatherKey  := "F24" ; Call Merryweather
-CallInsuranceKey     := "F24" ; Call Insurance
-CallLesterKey        := "l" ; Call Lester
-;--Word--
-KillGameKey          := "^+Delete" ; Kill game process, requires pskill.exe
-ForceDisconnectKey   := "^Delete" ; Force disconnect by suspending process for 10s, requires pssuspend.exe
-ChangeMapKey         := "Insert" ;ChangeMap
-RandomHeistKey       := "F24" ; Chooses on-call random heist from phone options
-ChatSnippetsKey      := "F24" ; Gives you a few text snippets to put in chat (chat must be already open)
-;--Macro--
-SaveMoneyKey         := "F24" ; No Funciona
-ReloadMacroKey       := "^NumpadSub" ; Reload this script
-PauseMacroKey        := "Numpad1" ; Pause this script
-SuspendMacroKey      := "F24" ; Suspend this script
-ExitMacroKey         := "F24" ; Exit this script
-MacroGuiKey          := "Numpad0" ; Show list macros
-MacroEditGuiKey      := "F24" ; In Progress, ¡¡¡¡No usar!!!
 
+#NoEnv
+SetWorkingDir %A_ScriptDir%
+CFG = GTAV.ini
 
-; Options (should be fine out of the box)
-DoConfirmKill        := true  ; If true the KillGame action will ask for confirmation before killing the process
-DoConfirmDisconnect  := true  ; If true the ForceDisconnect action will ask for confirmation before suspending the process
-IntDisconnectDelay   := 7     ; Amount of seconds to freeze the process for, 10 works fine
-IsVIPActivated       := false ; Initial status of CEO/VIP mode (after (re)loading script)
-;SetWinX              := 2810  ; Use SpyMonitor to set position X
-;SetWinY              := 0     ; Use SpyMonitor to set position Y
-SetTransparency      := 150   ; Trasparency MsgBox
+; Disables hotkeys when alt-tabbed or GTA is closed.
+; #IfWinActive ahk_class grcWindow
 
 
 ; Chat snippets (you can add more, comment them out or remove them, the pushs that is)
@@ -146,26 +92,64 @@ ArrayPhonebook.push("273-555-0155  - (useless) Truthseeker Helpline")
 ; === CONFIGURATION GOES ^^^ ===
 ; ==============================
 
-
-
-
-
-
-
-
-
+IniRead,DoConfirmKill,%CFG%,Settings,DoConfirmKill
+IniRead,DoConfirmDisconnect,%CFG%,Settings,DoConfirmDisconnect
+IniRead,IntDisconnectDelay,%CFG%,Settings,IntDisconnectDelay
+IniRead,IsVIPActivated,%CFG%,Settings,IsVIPActivated
+IniRead,SetTransparency,%CFG%,Settings,SetTransparency
+IniRead,SetWinX,%CFG%,Settings,SetWinX
+IniRead,SetWinY,%CFG%,Settings,SetWinY
+SetWinXm             = x%SetWinX%  ; Use SpyMonitor to set position X. (A_ScreenWidth/2)-(Width/2)
+SetWinYm             = y%SetWinY%    ; Use SpyMonitor to set position Y. (A_ScreenHeight/2)-(Height/2)
 
 ; ================================================
 ; === Are you sure you want to scroll further? ===
 ; ================================================
 
-
-#NoEnv
-SetWorkingDir A_ScriptDir
-CFG = GTA Quick.ini
-
-; Disables hotkeys when alt-tabbed or GTA is closed.
-#IfWinActive ahk_class grcWindow
+;--Combat--
+IniRead,SnackMenuKey,%CFG%,Hotkeys,SnackMenuKey,F24
+IniRead,AutoHealthKey,%CFG%,Hotkeys,AutoHealthKey,F24
+IniRead,ArmorMenuKey,%CFG%,Hotkeys,ArmorMenuKey,F24
+IniRead,AutoArmorKey,%CFG%,Hotkeys,AutoArmorKey,F24
+IniRead,TogglePassiveKey,%CFG%,Hotkeys,TogglePassiveKey,F24
+;--Charapter--
+IniRead,EquipScarfKey,%CFG%,Hotkeys,EquipScarfKey,F24
+IniRead,CycleOutfitKey,%CFG%,Hotkeys,CycleOutfitKey,F24
+IniRead,ThermalVisionKey,%CFG%,Hotkeys,ThermalVisionKey,F24
+;--VIP--
+IniRead,ToggleVIPKey,%CFG%,Hotkeys,ToggleVIPKey,F24
+IniRead,RegisterCEOKey,%CFG%,Hotkeys,RegisterCEOKey,F24
+IniRead,RegisterMCKey,%CFG%,Hotkeys,RegisterMCKey,F24
+IniRead,RetireVIPKey,%CFG%,Hotkeys,RetireVIPKey,F24
+IniRead,CEOBuzzardKey,%CFG%,Hotkeys,CEOBuzzardKey,F24
+IniRead,StorageMCKey,%CFG%,Hotkeys,StorageMCKey,F24
+;--Vehicle--
+IniRead,RetrieveCarKey,%CFG%,Hotkeys,RetrieveCarKey,F24
+IniRead,OpressorMKIIKey,%CFG%,Hotkeys,OpressorMKIIKey,F24
+IniRead,NanoDroneKey,%CFG%,Hotkeys,NanoDroneKey,F24
+IniRead,RCBanditoKey,%CFG%,Hotkeys,RCBanditoKey,F24
+IniRead,RCTankKey,%CFG%,Hotkeys,RCTankKey,F24
+;--Call--
+IniRead,DialDialogKey,%CFG%,Hotkeys,DialDialogKey,F24
+IniRead,CallMechanicKey,%CFG%,Hotkeys,CallMechanicKey,F24
+IniRead,CallPegasusKey,%CFG%,Hotkeys,CallPegasusKey,F24
+IniRead,CallMerryweatherKey,%CFG%,Hotkeys,CallMerryweatherKey,F24
+IniRead,CallInsuranceKey,%CFG%,Hotkeys,CallInsuranceKey,F24
+IniRead,CallLesterKey,%CFG%,Hotkeys,CallLesterKey,F24
+;--Word--
+IniRead,KillGameKey,%CFG%,Hotkeys,KillGameKey,F24
+IniRead,ForceDisconnectKey,%CFG%,Hotkeys,ForceDisconnectKey,F24
+IniRead,ChangeMapKey,%CFG%,Hotkeys,ChangeMapKey,F24
+IniRead,RandomHeistKey,%CFG%,Hotkeys,RandomHeistKey,F24
+IniRead,ChatSnippetsKey,%CFG%,Hotkeys,ChatSnippetsKey,F24
+;--Macro--
+IniRead,SaveMoneyKey,%CFG%,Hotkeys,SaveMoneyKey,F24
+IniRead,ReloadMacroKey,%CFG%,Hotkeys,ReloadMacroKey,F24
+IniRead,PauseMacroKey,%CFG%,Hotkeys,PauseMacroKey,F24
+IniRead,SuspendMacroKey,%CFG%,Hotkeys,SuspendMacroKey,F24
+IniRead,ExitMacroKey,%CFG%,Hotkeys,ExitMacroKey,F24
+IniRead,MacroGuiKey,%CFG%,Hotkeys,MacroGuiKey,F24
+IniRead,MacroEditGuiKey,%CFG%,Hotkeys,MacroEditGuiKey,F24
 
 ; Hotkey/Function mapping
 ;
@@ -193,7 +177,7 @@ Hotkey, %OpressorMKIIKey%, OpressorMKII
 Hotkey, %NanoDroneKey%, NanoDrone
 Hotkey, %RCBanditoKey%, RCBandito
 Hotkey, %RCTankKey%, RCTank
-;--Called--
+;--Call--
 Hotkey, %DialDialogKey%, DialDialog
 Hotkey, %CallMechanicKey%, CallMechanic
 Hotkey, %CallPegasusKey%, CallPegasus
@@ -239,7 +223,7 @@ ArrayMacros.push("OpressorMKII - " OpressorMKIIKey)
 ArrayMacros.push("NanoDrone - " NanoDroneKey)
 ArrayMacros.push("RCBandito - " RCBanditoKey)
 ArrayMacros.push("RCTank - " RCTankKey)
-ArrayMacros.push(";--Called--")
+ArrayMacros.push(";--Call--")
 ArrayMacros.push("DialDialog - " DialDialogKey)
 ArrayMacros.push("CallMechanic - " CallMechanicKey)
 ArrayMacros.push("CallPegasus - " CallPegasusKey)
@@ -785,8 +769,8 @@ _ChatSnippetsTypeout:
 
 ; Phone calls
 DialDialog:
-  global SetWinX
-  global SetWinY
+  global SetWinXm
+  global SetWinYm
   global SetTransparency
   pbl := ""
   For each, item in ArrayPhonebook
@@ -800,7 +784,7 @@ DialDialog:
   Gui, DIAL:add, Button, w500 Default g_DialDialogMakeCall, make call...
   Gui +LastFound  ; Make the GUI window the last found window for use by the line below.
   WinSet, TransColor, EEAA99 %SetTransparency%,
-  Gui, DIAL:show, x%SetWinX% y%SetWinY%,
+  Gui, DIAL:show, %SetWinXm% %SetWinYm%,
   return
 
 DIALGuiEscape:
@@ -899,8 +883,8 @@ ExitMacro:
 ; ===========
 
 MacroGui:
-  global SetWinX
-  global SetWinY
+  global SetWinXm
+  global SetWinYm
   global SetTransparency
   mcr := ""
   ; MacroSelect := 0
@@ -909,9 +893,9 @@ MacroGui:
   Gui, Macro:add, ListBox, w200 h300 vMacroSelect g_MacroGuiDialogFromSelect, %mcr%
   Gui, Macro:Font, s9, Verdana
   Gui, Macro:add, Button, w0 Default g_MacroGuiDialogMake, ok
-  Gui, Macro:show, x%SetWinX% y%SetWinY%,
   ; Gui +LastFound  ; Make the GUI window the last found window for use by the line below.
   WinSet, TransColor, EEAA99 %SetTransparency%, Macro
+  Gui, Macro:show, %SetWinXm% %SetWinYm%,
   ; WinWait, %Macro%,,1000
   ; bringGameIntoFocus()
   return
