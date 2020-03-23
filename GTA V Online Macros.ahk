@@ -44,7 +44,7 @@ SetWorkingDir %A_ScriptDir%
 CFG = GTAV.ini
 
 ; Disables hotkeys when alt-tabbed or GTA is closed.
-; #IfWinActive ahk_class grcWindow
+#IfWinActive ahk_class grcWindow
 
 
 ; Chat snippets (you can add more, comment them out or remove them, the pushs that is)
